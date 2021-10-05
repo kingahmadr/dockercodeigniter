@@ -13,5 +13,7 @@ Directory Structure
     │   └── Dockerfile
     └── webdata
 
-sql environment, such as password in the .env file
+dbdata_home: home directory of mariadb container
+nginx-conf: nginx web config
+webdata: website root directoy
 
