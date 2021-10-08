@@ -2,38 +2,32 @@ server {
         listen 80;
         listen [::]:80;
 
-#        server_name ahmadlapak.my www.ahmadlapak.my;
-        server_name inf.personanutrition.com www.inf.personanutrition.com;
-
+        server_name ahmadlapak.my www.ahmadlapak.my;
 
         location ~ /.well-known/acme-challenge {
                 allow all;
                 root /var/www/html;
         }
 
-        location / {
-                rewrite ^ https://$host$request_uri? permanent;
-        }
-}
+#        location / {
+#                rewrite ^ https://$host$request_uri? permanent;
+#        }
+#}
 
-server {
-        listen 443 ssl http2;
-        listen [::]:443 ssl http2;
-        server_name example.com www.example.com;
-	server_name inf.personanutrition.com www.inf.personanutrition.com;
+#server {
+#        listen 443 ssl http2;
+#        listen [::]:443 ssl http2;
+#        server_name example.com www.example.com;
 
         index index.php index.html index.htm;
 
         root /var/www/html;
 
-        server_tokens off;
+#        server_tokens off;
 #
 #        ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
 #        ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-
-        ssl_certificate /etc/nginx/ssl/personanutrition-certificate.crt;
-        ssl_certificate_key /etc/nginx/ssl/personanutrition-privatekey.key;
-
+#
 #        include /etc/nginx/conf.d/options-ssl-nginx.conf;
 
         add_header X-Frame-Options "SAMEORIGIN" always;
@@ -73,8 +67,8 @@ server {
                 log_not_found off;
         }
 	
-#	gzip on;
-#	access_log /var/log/nginx/ahmadlapak.com.access.log;
-#	error_log /var/log/nginx/ahmadlapak.com.error.log;
+	gzip on;
+	access_log /var/log/nginx/ahmadlapak.com.access.log;
+	error_log /var/log/nginx/ahmadlapak.com.error.log;
 
 }
