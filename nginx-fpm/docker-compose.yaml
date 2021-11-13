@@ -19,12 +19,21 @@ services:
       - app-network
   
   phpmyadmin:
-     image: phpmyadmin/phpmyadmin:latest
+     #image: phpmyadmin/phpmyadmin:latest
+     build:
+       context: ./
+       dockerfile: ./phpmyadmin/Dockerfile
+     container_name: phpmyadmin-container
+     restart: unless-stopped
+     volumes:
+       - ./phpmyadmin/ssl:/certs
+       - ./phpmyadmin/webconfig:/etc/apache2/site-available
      ports:
        - 8000:80
+       - 8443:443
      environment:
        - PMA_ARBITRARY=1
-       - PMA_HOST=mariadb
+       - PMA_HOST=database
      depends_on:
        - database
      networks:
