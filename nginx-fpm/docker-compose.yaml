@@ -1,22 +1,35 @@
 version: '3'
 
 services:
-#  database:
-#    #image: mariadb:10.6-focal
+  database:
+    image: mariadb:10.6-focal
 #    build:
 #      context: ./
 #      dockerfile: ./mariadb/Dockerfile
-#    container_name: database-tajalapak
-#    restart: unless-stopped
-#    env_file: .env
-#    environment:
-#      - MYSQL_DATABASE=tajalapak
-#    volumes:
-#      - ./dbdata_home:/home
-#      - dbdata_tajalapak:/var/lib/mysql
-#    command: '--default-authentication-plugin=mysql_native_password'
-#    networks:
-#      - app-network
+    container_name: database-website
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MYSQL_DATABASE=database-website
+    volumes:
+      - ./dbdata_home:/home
+      - dbdata:/var/lib/mysql
+    command: '--default-authentication-plugin=mysql_native_password'
+    networks:
+      - app-network
+  
+  phpmyadmin:
+     image: phpmyadmin/phpmyadmin:latest
+     ports:
+       - 8000:80
+     environment:
+       - PMA_ARBITRARY=1
+       - PMA_HOST=mariadb
+     depends_on:
+       - database
+     networks:
+       - app-network
+
   phpfpm:
     #image: bitnami/php-fpm:7.4-prod
     build:
@@ -27,8 +40,8 @@ services:
     restart: unless-stopped
     volumes: 
       - ./webdata:/var/www/html
-#    depends_on:
-#      - database
+    depends_on:
+      - database
     networks:
       - app-network
 
@@ -52,8 +65,8 @@ services:
 #      - certbot-etc:/etc/letsencrypt
     networks:
       - app-network
-#volumes:
-#  dbdata_tajalapak:
+volumes:
+  dbdata:
 
 networks:
   app-network:
